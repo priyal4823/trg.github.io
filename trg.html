@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Riddle Challenge PRO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #d63031;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: url('https://images.unsplash.com/photo-1639762681057-408e52192e55?q=80&w=2232&auto=format&fit=crop') center/cover fixed;
+            min-height: 100vh;
+            padding: 2rem;
+            color: var(--dark);
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeIn 1s ease;
+            background: rgba(255,255,255,0.9);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(to right, #6c5ce7, #00b894);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--dark);
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Control Panel */
+        .control-panel {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .control-panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .control-panel h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .category-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        select, input, button {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.3);
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #5649c0;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+        }
+
+        .btn-warning {
+            background-color: var(--warning);
+            color: var(--dark);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+        }
+
+        /* Riddle Display */
+        .riddle-display {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            min-height: 500px;
+        }
+
+        .riddle-display:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .riddle-display::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--primary);
+        }
+
+        .riddle-display h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .riddle-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .riddle-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .riddle-card::after {
+            content: "?";
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 6rem;
+            color: rgba(108, 92, 231, 0.08);
+            font-weight: bold;
+            z-index: 0;
+        }
+
+        .riddle-text {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        .riddle-image {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .riddle-category {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .riddle-difficulty {
+            display: inline-block;
+            margin-left: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .difficulty-easy {
+            color: var(--success);
+        }
+
+        .difficulty-medium {
+            color: var(--warning);
+        }
+
+        .difficulty-hard {
+            color: var(--danger);
+        }
+
+        .hint-text, .answer-text {
+            margin-top: 1rem;
+            padding: 1.2rem;
+            border-radius: 10px;
+            background: rgba(162, 155, 254, 0.1);
+            border-left: 4px solid var(--secondary);
+            font-style: italic;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .answer-text {
+            background: rgba(0, 184, 148, 0.1);
+            border-left: 4px solid var(--success);
+        }
+
+        .answer-input {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .answer-input input {
+            flex: 1;
+            padding: 0.8rem 1.2rem;
+            font-size: 1rem;
+        }
+
+        .answer-input button {
+            width: auto;
+            padding: 0.8rem 1.8rem;
+            font-size: 1rem;
+        }
+
+        .feedback {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 10px;
+            display: none;
+            font-weight: 600;
+            animation: pulse 0.5s;
+        }
+
+        .correct {
+            background: rgba(0, 184, 148, 0.2);
+            color: var(--success);
+            border-left: 4px solid var(--success);
+        }
+
+        .incorrect {
+            background: rgba(214, 48, 49, 0.2);
+            color: var(--danger);
+            border-left: 4px solid var(--danger);
+        }
+
+        .score-panel {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .score-item {
+            text-align: center;
+            padding: 0.5rem;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.7);
+            flex: 1;
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .score-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .score-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .score-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Floating Elements */
+        .floating-icons {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-icon {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 15s infinite linear;
+            font-size: 2rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            width: 50px;
+            height: 50px;
+            margin: 2rem auto;
+            border: 5px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Celebration */
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .celebration.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .celebration-content {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: bounceIn 0.5s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .celebration-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #6c5ce7, #00b894);
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        .celebration h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 2.2rem;
+        }
+
+        .celebration p {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        /* Progress */
+        .progress-container {
+            width: 100%;
+            background: rgba(0,0,0,0.1);
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            height: 12px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #6c5ce7, #00b894);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        /* Category Images */
+        .category-images {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .category-image-container {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-image-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .category-image-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 0.5rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .category-images {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .riddle-text {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .category-images {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-icons">
+        <div class="floating-icon" style="top: 10%; left: 5%;">💻</div>
+        <div class="floating-icon" style="top: 20%; right: 10%;">🔍</div>
+        <div class="floating-icon" style="bottom: 15%; left: 15%;">❓</div>
+        <div class="floating-icon" style="bottom: 25%; right: 5%;">⚙️</div>
+        <div class="floating-icon" style="top: 50%; left: 50%;">🤔</div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-laptop-code"></i> Tech Riddle Challenge PRO</h1>
+            <p class="subtitle">Test your technical knowledge with interactive riddles and beautiful visuals!</p>
+        </header>
+
+        <div class="main-content">
+            <div class="control-panel">
+                <h2><i class="fas fa-cogs"></i> Riddle Settings</h2>
+                
+                <div class="category-images">
+                    <div class="category-image-container" onclick="setCategory('programming')">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop" alt="Programming" class="category-image">
+                        <div class="category-image-label">Programming</div>
+                    </div>
+                    <div class="category-image-container" onclick="setCategory('algorithms')">
+                        <img src="https://images.unsplash.com/photo-1542621334-a254cf47733d?q=80&w=2070&auto=format&fit=crop" alt="Algorithms" class="category-image">
+                        <div class="category-image-label">Algorithms</div>
+                    </div>
+                    <div class="category-image-container" onclick="setCategory('data-structures')">
+                        <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070&auto=format&fit=crop" alt="Data Structures" class="category-image">
+                        <div class="category-image-label">Data Structures</div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">Category:</label>
+                    <select id="category">
+                        <option value="any">All Categories</option>
+                        <option value="programming">Programming</option>
+                        <option value="algorithms">Algorithms</option>
+                        <option value="data-structures">Data Structures</option>
+                        <option value="networking">Networking</option>
+                        <option value="databases">Databases</option>
+                        <option value="os">Operating Systems</option>
+                        <option value="web">Web Development</option>
+                        <option value="ai">Artificial Intelligence</option>
+                        <option value="security">Cyber Security</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="difficulty">Difficulty:</label>
+                    <select id="difficulty">
+                        <option value="any">All Difficulties</option>
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+                <button id="generate-btn"><i class="fas fa-bolt"></i> Generate Riddle</button>
+                <button id="generateMultipleBtn" class="btn-secondary"><i class="fas fa-random"></i> Generate 5 Riddles</button>
+                <div class="spinner" id="loadingIndicator"></div>
+            </div>
+
+            <div class="riddle-display">
+                <h2><i class="fas fa-question-circle"></i> Your Riddle</h2>
+                <div id="riddleContainer">
+                    <div class="riddle-card" id="defaultRiddle">
+                        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop" alt="Tech Riddle" class="riddle-image">
+                        <p class="riddle-text">Click "Generate Riddle" to get your first technical challenge!</p>
+                    </div>
+                </div>
+                
+                <div class="answer-input" id="answerInput" style="display: none;">
+                    <input type="text" id="userAnswer" placeholder="Type your answer here...">
+                    <button id="submitAnswer" class="btn-success"><i class="fas fa-check"></i> Submit</button>
+                </div>
+                
+                <div class="feedback" id="feedback"></div>
+                
+                <div class="action-buttons" id="actionButtons" style="display: none;">
+                    <button id="hintBtn" class="btn-warning"><i class="fas fa-lightbulb"></i> Show Hint</button>
+                    <button id="answerBtn" class="btn-success"><i class="fas fa-eye"></i> Reveal Answer</button>
+                </div>
+                
+                <div class="score-panel">
+                    <div class="score-item">
+                        <div class="score-value" id="scoreValue">0</div>
+                        <div class="score-label">Score</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-value" id="streakValue">0</div>
+                        <div class="score-label">Streak</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-value" id="progressValue">0%</div>
+                        <div class="score-label">Progress</div>
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="celebration" id="celebration">
+        <div class="celebration-content">
+            <h2><i class="fas fa-trophy"></i> Congratulations!</h2>
+            <p>You've completed all riddles in this category and difficulty level!</p>
+            <p>Your final score: <span id="finalScore">0</span></p>
+            <button id="continueBtn" class="btn-success"><i class="fas fa-redo"></i> Continue Exploring</button>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced Riddle Database with Images
+        const riddles = [
+            // Programming Riddles
+            {
+                id: 1,
+                text: "I'm a fundamental concept in programming, often used to store data. I can hold numbers, text, or more complex structures. What am I?",
+                hint: "Programmers use me to keep track of information in their code.",
+                answer: "A variable",
+                category: "programming",
+                difficulty: "easy",
+                explanation: "Variables are essential in programming as they allow storing and manipulating data. They can hold different types of values and are referenced by names in the code.",
+                image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop"
+            },
+            {
+                id: 2,
+                text: "I'm a process where a function calls itself. Used wisely, I can solve complex problems elegantly, but used poorly, I can crash your program. What am I?",
+                hint: "This technique is often used in algorithms like factorial calculation or tree traversals.",
+                answer: "Recursion",
+                category: "programming",
+                difficulty: "medium",
+                explanation: "Recursion is a powerful programming technique where a function calls itself to solve smaller instances of the same problem. It requires a base case to terminate the recursive calls.",
+                image: "https://images.unsplash.com/photo-1542621334-a254cf47733d?q=80&w=2070&auto=format&fit=crop"
+            },
+            {
+                id: 3,
+                text: "I'm a programming paradigm where programs are constructed by applying and composing functions. I emphasize immutable data and pure functions. What am I?",
+                hint: "Languages like Haskell and Elm are purely based on me, while JavaScript and Python support me to some degree.",
+                answer: "Functional programming",
+                category: "programming",
+                difficulty: "hard",
+                explanation: "Functional programming treats computation as the evaluation of mathematical functions and avoids changing-state and mutable data. It's gaining popularity for its benefits in parallel processing and maintainability.",
+                image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=2069&auto=format&fit=crop"
+            },
+            
+            // Algorithms Riddles
+            {
+                id: 4,
+                text: "I'm a searching algorithm that works by repeatedly dividing the search interval in half. My prerequisite is that the data must be sorted. What am I?",
+                hint: "My time complexity is O(log n), making me very efficient for large datasets.",
+                answer: "Binary search",
+                category: "algorithms",
+                difficulty: "medium",
+                explanation: "Binary search is an efficient algorithm for finding an item from a sorted list of items. It works by repeatedly dividing in half the portion of the list that could contain the item.",
+                image: "https://images.unsplash.com/photo-1542621334-a254cf47733d?q=80&w=2070&auto=format&fit=crop"
+            },
+            {
+                id: 5,
+                text: "I'm an algorithm design paradigm that breaks a problem into smaller subproblems, solves each subproblem recursively, and combines their solutions to solve the original problem. My name suggests dividing and conquering. What am I?",
+                hint: "Algorithms like merge sort and quicksort use me.",
+                answer: "Divide and conquer",
+                category: "algorithms",
+                difficulty: "medium",
+                explanation: "The divide and conquer approach involves three steps at each level of recursion: divide the problem into subproblems, conquer the subproblems by solving them recursively, and combine the solutions to the subproblems into the solution for the original problem.",
+                image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop"
+            },
+            {
+                id: 6,
+                text: "I'm a graph traversal algorithm that explores all the vertices of a graph by moving to the deepest level first before backtracking. My name suggests depth. What am I?",
+                hint: "I'm often implemented using a stack data structure.",
+                answer: "Depth-First Search (DFS)",
+                category: "algorithms",
+                difficulty: "hard",
+                explanation: "DFS explores as far as possible along each branch before backtracking. It's useful for solving problems like finding connected components, topological sorting, and solving mazes.",
+                image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070&auto=format&fit=crop"
+            },
+            
+            // Data Structures Riddles
+            {
+                id: 7,
+                text: "I'm a data structure that follows the Last-In-First-Out (LIFO) principle. You can push items onto me and pop them off. What am I?",
+                hint: "I'm often used in function calls and undo mechanisms.",
+                answer: "A stack",
+                category: "data-structures",
+                difficulty: "easy",
+                explanation: "A stack is a linear data structure that follows a particular order in which operations are performed. The order is LIFO (Last In First Out) which means the last element added is the first to be removed.",
+                image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070&auto=format&fit=crop"
+            },
+            {
+                id: 8,
+                text: "I'm a data structure that consists of nodes connected by edges, where each node can have zero or more children, but only one parent (except the root). What am I?",
+                hint: "I'm often used to represent hierarchical data like file systems or organization charts.",
+                answer: "A tree",
+                category: "data-structures",
+                difficulty: "medium",
+                explanation: "A tree is a widely used abstract data type that simulates a hierarchical tree structure, with a root value and subtrees of children with a parent node, represented as a set of linked nodes.",
+                image: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=2070&auto=format&fit=crop"
+            },
+            {
+                id: 9,
+                text: "I'm a data structure that stores elements in a way that the highest (or lowest) priority element is always at the front. I'm often implemented using a complete binary tree. What am I?",
+                hint: "I'm used in algorithms like Dijkstra's and Huffman coding.",
+                answer: "Priority queue (or Heap)",
+                category: "data-structures",
+                difficulty: "hard",
+                explanation: "A priority queue is an abstract data type similar to a regular queue or stack data structure in which each element additionally has a 'priority' associated with it. In a priority queue, an element with high priority is served before an element with low priority.",
+                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop"
+            },
+            
+            // Networking Riddles
+            {
+                id: 10,
+                text: "I'm a unique identifier assigned to each device on a network. I consist of six pairs of hexadecimal numbers. What am I?",
+                hint: "I'm burned into network interface cards at the factory.",
+                answer: "MAC address (Media Access Control address)",
+                category: "networking",
+                difficulty: "medium",
+                explanation: "A MAC address is a unique identifier assigned to a network interface controller (NIC) for use as a network address in communications within a network segment. It's used at the data link layer of the OSI model.",
+                image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop"
+            },
+            {
+                id: 11,
+                text: "I'm a network protocol that translates human-readable domain names into machine-readable IP addresses. I'm often called the 'phone book of the internet'. What am I?",
+                hint: "I use a hierarchical and distributed database to store name-to-address mappings.",
+                answer: "DNS (Domain Name System)",
+                category: "networking",
+                difficulty: "easy",
+                explanation: "The Domain Name System is a hierarchical and decentralized naming system used to resolve human-readable domain names (like example.com) into the numerical IP addresses needed for locating and identifying computer services and devices.",
+                image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop"
+            },
+            {
+                id: 12,
+                text: "I'm a network security system that monitors and controls incoming and outgoing network traffic based on predetermined security rules. I act as a barrier between trusted and untrusted networks. What am I?",
+                hint: "I can be hardware-based, software-based, or a combination of both.",
+                answer: "Firewall",
+                category: "networking",
+                difficulty: "medium",
+                explanation: "A firewall is a network security device that monitors and filters incoming and outgoing network traffic based on an organization's previously established security policies. It establishes a barrier between a trusted internal network and untrusted external networks.",
+                image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2232&auto=format&fit=crop"
+            },
+            
+            // Databases Riddles
+            {
+                id: 13,
+                text: "I'm a database operation that combines rows from two or more tables based on a related column. I come in several flavors like inner, left, right, and full. What am I?",
+                hint: "I'm essential for relational database queries that need data from multiple tables.",
+                answer: "A JOIN operation",
+                category: "databases",
+                difficulty: "hard",
+                explanation: "A JOIN clause is used to combine rows from two or more tables, based on a related column between them. Different types of JOINs return different result sets: INNER JOIN returns rows when there is a match, LEFT JOIN returns all rows from the left table, RIGHT JOIN returns all rows from the right table, and FULL JOIN returns rows when there is a match in one of the tables.",
+                image: "https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=1964&auto=format&fit=crop"
+            },
+            {
+                id: 14,
+                text: "I'm a database property that guarantees that transactions are processed reliably and ensures data validity despite errors, power failures, or other mishaps. My acronym stands for Atomicity, Consistency, Isolation, Durability. What am I?",
+                hint: "I'm a key feature of relational database systems.",
+                answer: "ACID properties",
+                category: "databases",
+                difficulty: "hard",
+                explanation: "ACID is a set of properties that guarantee that database transactions are processed reliably. Atomicity ensures that transactions are all-or-nothing, Consistency ensures only valid data is written, Isolation ensures concurrent transactions don't interfere, and Durability ensures committed transactions survive permanently.",
+                image: "https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=1964&auto=format&fit=crop"
+            },
+            {
+                id: 15,
+                text: "I'm a technique used to optimize database queries by creating a data structure that allows faster retrieval. I come at the cost of additional storage space and slower writes. What am I?",
+                hint: "I'm like the index at the back of a textbook that helps you find information quickly.",
+                answer: "Database index",
+                category: "databases",
+                difficulty: "medium",
+                explanation: "A database index is a data structure that improves the speed of data retrieval operations on a database table at the cost of additional writes and storage space to maintain the index data structure. Indexes are used to quickly locate data without having to search every row in a database table.",
+                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop"
+            },
+            
+            // Operating Systems Riddles
+            {
+                id: 16,
+                text: "I'm a situation where two or more processes are waiting indefinitely for an event that can be caused only by one of the waiting processes. What am I?",
+                hint: "I'm a common problem in concurrent programming that requires careful synchronization to avoid.",
+                answer: "Deadlock",
+                category: "os",
+                difficulty: "hard",
+                explanation: "A deadlock is a state in which each member of a group is waiting for another member to take action, such as releasing a resource. The four necessary conditions for deadlock are: mutual exclusion, hold and wait, no preemption, and circular wait.",
+                image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop"
+            },
+            {
+                id: 17,
+                text: "I'm a memory management technique where the operating system maps memory addresses used by a program to physical addresses in computer memory. What am I?",
+                hint: "I allow programs to use more memory than is physically available in the computer.",
+                answer: "Virtual memory",
+                category: "os",
+                difficulty: "hard",
+                explanation: "Virtual memory is a memory management technique that provides an 'idealized abstraction' of the storage resources that are actually available on a given machine. It creates the illusion to users of a very large (main) memory by using part of the hard drive as if it were RAM.",
+                image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop"
+            },
+            {
+                id: 18,
+                text: "I'm a technique used by operating systems to store and retrieve data from secondary storage for use in main memory. My name comes from the concept of breaking memory into fixed-size blocks. What am I?",
+                hint: "I help manage memory more efficiently by allowing the system to run programs larger than physical memory.",
+                answer: "Paging",
+                category: "os",
+                difficulty: "hard",
+                explanation: "Paging is a memory management scheme that eliminates the need for contiguous allocation of physical memory. The physical memory is divided into fixed-size blocks called frames, and the logical memory is divided into blocks of the same size called pages.",
+                image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop"
+            },
+            
+            // Web Development Riddles
+            {
+                id: 19,
+                text: "I'm a web technology that allows a web page to update parts of its content without reloading the whole page. What am I?",
+                hint: "The 'X' in my name stands for 'XML', but JSON is more commonly used with me today.",
+                answer: "AJAX (Asynchronous JavaScript and XML)",
+                category: "web",
+                difficulty: "medium",
+                explanation: "AJAX is a set of web development techniques using many web technologies on the client side to create asynchronous web applications. With AJAX, web applications can send and retrieve data from a server asynchronously without interfering with the display and behavior of the existing page.",
+                image: "https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=1964&auto=format&fit=crop"
+            },
+            {
+                id: 20,
+                text: "I'm a web storage mechanism that allows websites to store data persistently in a user's browser. I have a larger storage capacity than cookies and don't get sent with every HTTP request. What am I?",
+                hint: "I'm part of the Web Storage API along with my session-based counterpart.",
+                answer: "LocalStorage",
+                category: "web",
+                difficulty: "medium",
+                explanation: "The localStorage property allows you to access a Storage object for the Document's origin; the stored data is saved across browser sessions. Unlike cookies, localStorage data isn't sent to the server with every HTTP request and has a much larger storage limit (typically 5MB).",
+                image: "https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=1964&auto=format&fit=crop"
+            },
+            {
+                id: 21,
+                text: "I'm a JavaScript runtime built on Chrome's V8 engine that allows JavaScript to run on the server. My package ecosystem, npm, is the largest ecosystem of open source libraries in the world. What am I?",
+                hint: "I'm often used to build scalable network applications and APIs.",
+                answer: "Node.js",
+                category: "web",
+                difficulty: "easy",
+                explanation: "Node.js is an open-source, cross-platform JavaScript runtime environment that executes JavaScript code outside a web browser. It uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.",
+                image: "https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=1964&auto=format&fit=crop"
+            },
+            
+            // AI Riddles
+            {
+                id: 22,
+                text: "I'm a type of machine learning where artificial neural networks adapt and learn from vast amounts of data. My name comes from the structure of the human brain. What am I?",
+                hint: "I'm particularly good at tasks like image and speech recognition.",
+                answer: "Deep learning",
+                category: "ai",
+                difficulty: "medium",
+                explanation: "Deep learning is part of a broader family of machine learning methods based on artificial neural networks with representation learning. It uses multiple layers to progressively extract higher-level features from the raw input.",
+                image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1965&auto=format&fit=crop"
+            },
+            {
+                id: 23,
+                text: "I'm a technique in machine learning where an agent learns to behave in an environment by performing actions and receiving rewards or penalties. What am I?",
+                hint: "I'm inspired by behavioral psychology and often used in game AI.",
+                answer: "Reinforcement learning",
+                category: "ai",
+                difficulty: "hard",
+                explanation: "Reinforcement learning is an area of machine learning concerned with how software agents ought to take actions in an environment in order to maximize the notion of cumulative reward. It differs from supervised learning in that correct input/output pairs need not be presented.",
+                image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1965&auto=format&fit=crop"
+            },
+            
+            // Security Riddles
+            {
+                id: 24,
+                text: "I'm a security mechanism that creates a secure, encrypted connection over a less secure network. My name comes from 'secure sockets'. What am I?",
+                hint: "Websites using me show a padlock icon in the browser.",
+                answer: "SSL/TLS",
+                category: "security",
+                difficulty: "medium",
+                explanation: "Transport Layer Security (TLS), and its now-deprecated predecessor, Secure Sockets Layer (SSL), are cryptographic protocols designed to provide communications security over a computer network. They encrypt the segments of network connections above the transport layer.",
+                image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2232&auto=format&fit=crop"
+            },
+            {
+                id: 25,
+                text: "I'm a type of cyber attack where the attacker sends fraudulent communications that appear to come from a reputable source. My name comes from a technique used to catch fish. What am I?",
+                hint: "I often come in emails pretending to be from banks or other trusted organizations.",
+                answer: "Phishing",
+                category: "security",
+                difficulty: "easy",
+                explanation: "Phishing is a type of social engineering attack often used to steal user data, including login credentials and credit card numbers. It occurs when an attacker, masquerading as a trusted entity, dupes a victim into opening an email, instant message, or text message.",
+                image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2232&auto=format&fit=crop"
+            }
+        ];
+
+        // DOM Elements
+        const generateBtn = document.getElementById('generate-btn');
+        const generateMultipleBtn = document.getElementById('generateMultipleBtn');
+        const categorySelect = document.getElementById('category');
+        const difficultySelect = document.getElementById('difficulty');
+        const riddleContainer = document.getElementById('riddleContainer');
+        const hintBtn = document.getElementById('hintBtn');
+        const answerBtn = document.getElementById('answerBtn');
+        const actionButtons = document.getElementById('actionButtons');
+        const answerInput = document.getElementById('answerInput');
+        const userAnswer = document.getElementById('userAnswer');
+        const submitAnswer = document.getElementById('submitAnswer');
+        const feedback = document.getElementById('feedback');
+        const scoreValue = document.getElementById('scoreValue');
+        const streakValue = document.getElementById('streakValue');
+        const progressValue = document.getElementById('progressValue');
+        const progressBar = document.getElementById('progressBar');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const celebration = document.getElementById('celebration');
+        const finalScore = document.getElementById('finalScore');
+        const continueBtn = document.getElementById('continueBtn');
+
+        // State Variables
+        let currentRiddle = null;
+        let score = 0;
+        let streak = 0;
+        let seenRiddles = new Set();
+        let riddlesAnswered = 0;
+        let totalRiddles = riddles.length;
+
+        // Initialize the App
+        function init() {
+            // Load saved state
+            loadState();
+            
+            // Set up event listeners
+            generateBtn.addEventListener('click', generateRiddle);
+            generateMultipleBtn.addEventListener('click', () => generateRiddle(5));
+            hintBtn.addEventListener('click', showHint);
+            answerBtn.addEventListener('click', showAnswer);
+            submitAnswer.addEventListener('click', checkAnswer);
+            continueBtn.addEventListener('click', closeCelebration);
+            
+            // Allow Enter key to submit answer
+            userAnswer.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkAnswer();
+                }
+            });
+            
+            // Update progress display
+            updateProgress();
+        }
+
+        // Set category from image click
+        function setCategory(category) {
+            categorySelect.value = category;
+            generateRiddle();
+        }
+
+        // Generate a riddle
+        function generateRiddle(count = 1) {
+            const category = categorySelect.value;
+            const difficulty = difficultySelect.value;
+            
+            // Show loading indicator if generating multiple riddles
+            if (count > 1) {
+                loadingIndicator.style.display = 'block';
+                riddleContainer.innerHTML = '';
+                
+                setTimeout(() => {
+                    generateMultipleRiddles(count);
+                    loadingIndicator.style.display = 'none';
+                }, 1000);
+            } else {
+                generateSingleRiddle();
+            }
+        }
+
+        // Generate a single riddle
+        function generateSingleRiddle() {
+            const category = categorySelect.value;
+            const difficulty = difficultySelect.value;
+            
+            // Filter riddles based on selection
+            let filteredRiddles = riddles.filter(riddle => {
+                const categoryMatch = category === 'any' || riddle.category === category;
+                const difficultyMatch = difficulty === 'any' || riddle.difficulty === difficulty;
+                return categoryMatch && difficultyMatch;
+            });
+
+            // Filter out seen riddles if not all have been seen
+            const unseenRiddles = filteredRiddles.filter(riddle => !seenRiddles.has(riddle.id));
+            if (unseenRiddles.length > 0) {
+                filteredRiddles = unseenRiddles;
+            }
+
+            // Check if any riddles are available
+            if (filteredRiddles.length === 0) {
+                showNoRiddlesMessage();
+                return;
+            }
+
+            // Select a random riddle
+            const randomIndex = Math.floor(Math.random() * filteredRiddles.length);
+            currentRiddle = filteredRiddles[randomIndex];
+            seenRiddles.add(currentRiddle.id);
+
+            // Display the riddle
+            displayRiddle(currentRiddle);
+            
+            // Update progress
+            updateProgress();
+        }
+
+        // Generate multiple riddles
+        function generateMultipleRiddles(count) {
+            const category = categorySelect.value;
+            const difficulty = difficultySelect.value;
+            
+            // Filter riddles based on selection
+            let filteredRiddles = riddles.filter(riddle => {
+                const categoryMatch = category === 'any' || riddle.category === category;
+                const difficultyMatch = difficulty === 'any' || riddle.difficulty === difficulty;
+                return categoryMatch && difficultyMatch;
+            });
+
+            // Filter out seen riddles if not all have been seen
+            const unseenRiddles = filteredRiddles.filter(riddle => !seenRiddles.has(riddle.id));
+            if (unseenRiddles.length > 0) {
+                filteredRiddles = unseenRiddles;
+            }
+
+            // Check if any riddles are available
+            if (filteredRiddles.length === 0) {
+                showNoRiddlesMessage();
+                return;
+            }
+
+            // Shuffle and select up to count riddles
+            const shuffled = [...filteredRiddles].sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, Math.min(count, shuffled.length));
+
+            // Display all selected riddles
+            riddleContainer.innerHTML = '';
+            selected.forEach((riddle, index) => {
+                seenRiddles.add(riddle.id);
+                if (index === selected.length - 1) {
+                    currentRiddle = riddle;
+                }
+                displayRiddle(riddle, index !== selected.length - 1);
+            });
+
+            // Update progress
+            updateProgress();
+        }
+
+        // Show message when no riddles available
+        function showNoRiddlesMessage() {
+            riddleContainer.innerHTML = `
+                <div class="riddle-card">
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop" alt="No Riddles" class="riddle-image">
+                    <p class="riddle-text">You've seen all the riddles in this category and difficulty level! Try changing the filters or reset your progress.</p>
+                </div>
+            `;
+            actionButtons.style.display = 'none';
+            answerInput.style.display = 'none';
+            
+            // Show celebration if all riddles in current filter are completed
+            const category = categorySelect.value;
+            const difficulty = difficultySelect.value;
+            const totalInCategory = riddles.filter(r => 
+                (category === 'any' || r.category === category) && 
+                (difficulty === 'any' || r.difficulty === difficulty)
+            ).length;
+            
+            if (seenRiddles.size >= totalInCategory && totalInCategory > 0) {
+                finalScore.textContent = score;
+                celebration.classList.add('active');
+                createConfetti();
+            }
+        }
+
+        // Display a riddle
+        function displayRiddle(riddle, hideActions = false) {
+            const difficultyClass = `difficulty-${riddle.difficulty}`;
+            
+            const riddleElement = document.createElement('div');
+            riddleElement.className = 'riddle-card';
+            riddleElement.innerHTML = `
+                <img src="${riddle.image}" alt="${riddle.category}" class="riddle-image">
+                <span class="riddle-category">${formatCategory(riddle.category)}</span>
+                <span class="riddle-difficulty ${difficultyClass}">${formatDifficulty(riddle.difficulty)}</span>
+                <p class="riddle-text">${riddle.text}</p>
+                <div class="hint-text" id="hintText">${riddle.hint}</div>
+                <div class="answer-text" id="answerText">
+                    <p><strong>Answer:</strong> ${riddle.answer}</p>
+                    <p><strong>Explanation:</strong> ${riddle.explanation}</p>
+                </div>
+            `;
+            
+            if (!hideActions) {
+                riddleContainer.innerHTML = '';
+                riddleContainer.appendChild(riddleElement);
+                actionButtons.style.display = 'grid';
+                answerInput.style.display = 'flex';
+                feedback.style.display = 'none';
+                userAnswer.value = '';
+                document.getElementById('hintText').style.display = 'none';
+                document.getElementById('answerText').style.display = 'none';
+            } else {
+                riddleContainer.appendChild(riddleElement);
+            }
+        }
+
+        // Show hint
+        function showHint() {
+            document.getElementById('hintText').style.display = 'block';
+            // Penalize score for using hint
+            score = Math.max(0, score - 5);
+            updateScoreDisplay();
+            saveState();
+        }
+
+        // Show answer
+        function showAnswer() {
+            document.getElementById('answerText').style.display = 'block';
+            // Reset streak when answer is revealed
+            streak = 0;
+            streakValue.textContent = streak;
+            saveState();
+        }
+
+        // Check user's answer
+        function checkAnswer() {
+            const userResponse = userAnswer.value.trim().toLowerCase();
+            const correctAnswer = currentRiddle.answer.toLowerCase();
+            
+            // Simple answer matching (could be enhanced with more sophisticated matching)
+            const isCorrect = correctAnswer.includes(userResponse) || 
+                             userResponse.includes(correctAnswer) ||
+                             checkSynonymMatch(userResponse, correctAnswer);
+            
+            if (isCorrect) {
+                // Correct answer
+                feedback.textContent = "✅ Correct! Well done!";
+                feedback.className = "feedback correct";
+                feedback.style.display = 'block';
+                
+                // Increase score and streak
+                score += 10 + (streak * 2); // Bonus for streak
+                streak++;
+                
+                // Show answer with explanation
+                document.getElementById('answerText').style.display = 'block';
+                
+                // Play success sound
+                playSound('success');
+            } else {
+                // Incorrect answer
+                feedback.textContent = "❌ Not quite right. Try again or reveal the answer.";
+                feedback.className = "feedback incorrect";
+                feedback.style.display = 'block';
+                
+                // Reset streak
+                streak = 0;
+                
+                // Play error sound
+                playSound('error');
+            }
+            
+            updateScoreDisplay();
+            saveState();
+        }
+
+        // Play sound effects
+        function playSound(type) {
+            const audio = new Audio();
+            if (type === 'success') {
+                audio.src = 'https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3';
+            } else {
+                audio.src = 'https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3';
+            }
+            audio.play();
+        }
+
+        // Simple synonym matching for answers
+        function checkSynonymMatch(userAnswer, correctAnswer) {
+            const synonyms = {
+                "variable": ["var", "identifier"],
+                "recursion": ["recursive", "recursive function"],
+                "stack": ["lifo", "last in first out"],
+                "queue": ["fifo", "first in first out"],
+                "dns": ["domain name system", "name resolution"],
+                "firewall": ["network firewall", "security barrier"],
+                "ajax": ["asynchronous javascript"],
+                "localstorage": ["web storage", "browser storage"],
+                "node.js": ["nodejs", "node"]
+            };
+            
+            // Check if user answer matches any synonyms of correct answer
+            if (synonyms[correctAnswer]) {
+                return synonyms[correctAnswer].includes(userAnswer);
+            }
+            
+            return false;
+        }
+
+        // Format category name for display
+        function formatCategory(category) {
+            const categoryMap = {
+                'programming': 'Programming',
+                'algorithms': 'Algorithms',
+                'data-structures': 'Data Structures',
+                'networking': 'Networking',
+                'databases': 'Databases',
+                'os': 'Operating Systems',
+                'web': 'Web Development',
+                'ai': 'Artificial Intelligence',
+                'security': 'Cyber Security'
+            };
+            return categoryMap[category] || category;
+        }
+
+        // Format difficulty for display
+        function formatDifficulty(difficulty) {
+            return difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+        }
+
+        // Update score display
+        function updateScoreDisplay() {
+            scoreValue.textContent = score;
+            streakValue.textContent = streak;
+            saveState();
+        }
+
+        // Update progress display
+        function updateProgress() {
+            riddlesAnswered = seenRiddles.size;
+            const percentage = totalRiddles > 0 ? Math.round((riddlesAnswered / totalRiddles) * 100) : 0;
+            progressValue.textContent = `${percentage}%`;
+            progressBar.style.width = `${percentage}%`;
+            
+            // Celebrate milestones
+            if (percentage > 0 && percentage % 25 === 0) {
+                createConfetti();
+                playSound('success');
+            }
+        }
+
+        // Create confetti effect
+        function createConfetti() {
+            for (let i = 0; i < 150; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.backgroundColor = getRandomColor();
+                confetti.style.width = `${Math.random() * 10 + 5}px`;
+                confetti.style.height = `${Math.random() * 10 + 5}px`;
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                document.body.appendChild(confetti);
+                
+                // Remove confetti after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+
+        // Get random color for confetti
+        function getRandomColor() {
+            const colors = ['#6c5ce7', '#a29bfe', '#00b894', '#fdcb6e', '#e17055', '#d63031'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        // Close celebration modal
+        function closeCelebration() {
+            celebration.classList.remove('active');
+        }
+
+        // Load state from localStorage
+        function loadState() {
+            const savedState = localStorage.getItem('techRiddleGeneratorState');
+            if (savedState) {
+                const state = JSON.parse(savedState);
+                score = state.score || 0;
+                streak = state.streak || 0;
+                seenRiddles = new Set(state.seenRiddles || []);
+                updateScoreDisplay();
+            }
+        }
+
+        // Save state to localStorage
+        function saveState() {
+            const state = {
+                score,
+                streak,
+                seenRiddles: Array.from(seenRiddles)
+            };
+            localStorage.setItem('techRiddleGeneratorState', JSON.stringify(state));
+        }
+
+        // Initialize the app
+        init();
+    </script>
+</body>
+</html>
